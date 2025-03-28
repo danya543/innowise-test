@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+    <link rel="shortcut icon" href="/public/favicon.png" type="image/x-icon">
     <meta charset="UTF-8">
     <title>Calculator</title>
 </head>
@@ -9,6 +10,14 @@
 <body>
     <div class="calculator">
         <div class="display" id="display">0</div>
+        <div class="history-overlay"></div>
+        <div class="history-panel">
+            <div class="history-header">
+                <h3>История вычислений</h3>
+                <button class="clear-history">Очистить</button>
+            </div>
+            <ul class="history-list"></ul>
+        </div>
         <div class="buttons">
             <button class="function">AC</button>
             <button class="function">+/-</button>
@@ -30,13 +39,14 @@
             <button class="number">3</button>
             <button class="operator">+</button>
 
-            <button class="number zero" style="border-end-start-radius: 10px">0</button>
+            <button class="history" style="border-end-start-radius: 10px"><img src="/public/history.png"
+                    alt="History"></button>
+            <button class="number">0</button>
             <button class="number">,</button>
             <button class="operator" style="border-end-end-radius: 10px">=</button>
         </div>
     </div>
-
-    <script src="bundle.js"></script>
+    <button id="theme-toggle" class="theme-btn">🌓</button>
 </body>
 
 </html>

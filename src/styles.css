@@ -1,23 +1,53 @@
+:root {
+  --bg-color: rgb(245, 245, 245);
+  --text-color: rgb(240, 240, 240);
+  --calculator-bg: rgb(83, 83, 83);
+  --border-color: rgb(108, 108, 108);
+  --function-bg: rgb(100, 100, 100);
+  --operator-bg: rgb(255, 159, 10);
+  --number-bg: rgb(125, 125, 125);
+  --overlay-bg: rgb(0, 0, 0);
+}
+[data-theme="dark"] {
+  --bg-color: rgb(42, 42, 42);
+  --calculator-bg: rgb(172, 172, 172);
+  --border-color: rgb(147, 147, 147);
+  --function-bg: rgb(155, 155, 155);
+  --operator-bg: rgb(136, 184, 255);
+  --number-bg: rgb(130, 130, 130);
+  --overlay-bg: rgb(255, 255, 255);
+}
+.theme-btn {
+  background: transparent;
+  border: none;
+  position: fixed;
+  top: 0;
+  right: 0;
+  padding: 10px;
+}
+
 body {
+  overflow: hidden;
+  margin: 0;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
   font-family: Arial, sans-serif;
-  background-color: #f5f5f5;
+  background-color: var(--bg-color);
 }
 
 .calculator {
-  border: 1px solid #6c6c6c;
+  border: 1px solid var(--border-color);
   width: 300px;
-  background-color: #535353;
+  background-color: var(--calculator-bg);
   border-radius: 10px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
 .display {
-  background-color: #535353;
-  color: white;
+  background-color: var(--calculator-bg);
+  color: var(--text-color);
   font-size: 30px;
   text-align: right;
   padding: 15px;
@@ -31,7 +61,7 @@ body {
 }
 
 button {
-  border: 1px solid #6c6c6c;
+  border: 1px solid var(--border-color);
   padding: 15px;
   font-size: 25px;
   cursor: pointer;
@@ -39,18 +69,18 @@ button {
 }
 
 .function {
-  background-color: #646464;
-  color: white;
+  background-color: var(--function-bg);
+  color: var(--text-color);
 }
 
 .operator {
-  background-color: #ff9f0a;
-  color: white;
+  background-color: var(--operator-bg);
+  color: var(--text-color);
 }
 
 .number {
-  background-color: #7d7d7d;
-  color: white;
+  background-color: var(--number-bg);
+  color: var(--text-color);
 }
 
 .zero {
@@ -63,4 +93,111 @@ button:hover {
 
 button:active {
   transform: scale(0.95);
+}
+
+.history {
+  padding: 8px 10px 0;
+  background-color: var(--number-bg);
+  outline: none;
+}
+
+.history img {
+  width: 40px;
+}
+
+.history-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--overlay-bg);
+  z-index: 100;
+  display: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.history-overlay.visible {
+  display: block;
+  opacity: 0.3;
+}
+
+.history-panel {
+  overflow: auto;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.9);
+  width: 350px;
+  height: 60vh;
+  background: var(--calculator-bg);
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0 5px 25px rgba(var(--bg-color), 0.3);
+  transition: all 0.3s ease;
+  z-index: 101;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.history-panel.visible {
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 1;
+  visibility: visible;
+}
+
+.history-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.history-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: calc(60vh - 100px);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--operator-bg) transparent;
+}
+
+.history-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.history-list::-webkit-scrollbar-thumb {
+  background-color: var(--operator-bg);
+  border-radius: 3px;
+}
+
+.history-list li {
+  padding: 10px 8px;
+  border-bottom: 1px solid var(--border-color);
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.history-list li:last-child {
+  border-bottom: none;
+}
+
+.history-list li:hover {
+  background: var(--function-bg);
+}
+
+.clear-history {
+  opacity: 1;
+  background: var(--operator-bg);
+  border: none;
+  color: var(--text-color);
+  padding: 5px 10px;
+  border-radius: 5px;
+  transition: opacity 0.2s ease;
+}
+
+.clear-history:hover {
+  opacity: 0.5;
 }
