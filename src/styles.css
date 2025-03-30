@@ -38,6 +38,7 @@ body {
 }
 
 .calculator {
+  color: var(--text-color);
   border: 1px solid var(--border-color);
   width: 300px;
   background-color: var(--calculator-bg);
@@ -47,7 +48,6 @@ body {
 
 .display {
   background-color: var(--calculator-bg);
-  color: var(--text-color);
   font-size: 30px;
   text-align: right;
   padding: 15px;
@@ -61,6 +61,8 @@ body {
 }
 
 button {
+  outline: none;
+  color: var(--text-color);
   border: 1px solid var(--border-color);
   padding: 15px;
   font-size: 25px;
@@ -70,35 +72,23 @@ button {
 
 .function {
   background-color: var(--function-bg);
-  color: var(--text-color);
 }
 
 .operator {
   background-color: var(--operator-bg);
-  color: var(--text-color);
 }
 
 .number {
   background-color: var(--number-bg);
-  color: var(--text-color);
-}
-
-.zero {
-  grid-column: span 2;
 }
 
 button:hover {
   opacity: 0.8;
 }
 
-button:active {
-  transform: scale(0.95);
-}
-
 .history {
   padding: 8px 10px 0;
   background-color: var(--number-bg);
-  outline: none;
 }
 
 .history img {
@@ -192,7 +182,6 @@ button:active {
   opacity: 1;
   background: var(--operator-bg);
   border: none;
-  color: var(--text-color);
   padding: 5px 10px;
   border-radius: 5px;
   transition: opacity 0.2s ease;

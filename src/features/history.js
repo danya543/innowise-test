@@ -36,8 +36,13 @@ clearHistoryBtn.addEventListener("click", () => {
 
 export function addToHistory(expression, result) {
   const entry = `${expression} = ${result}`;
+
+  if (calculationHistory.length > 0 && calculationHistory[0] === entry) {
+    return;
+  }
+
   calculationHistory.unshift(entry);
-  if (calculationHistory.length > 10) {
+  if (calculationHistory.length > 20) {
     calculationHistory.pop();
   }
   localStorage.setItem("calcHistory", JSON.stringify(calculationHistory));
@@ -53,6 +58,7 @@ historyList.addEventListener("click", (e) => {
     const entry = e.target.textContent;
     const expression = entry.split(" = ")[0];
     display.textContent = expression;
+    historyOverlay.classList.remove("visible");
     historyPanel.classList.remove("visible");
   }
 });
