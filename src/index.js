@@ -1,6 +1,6 @@
-import { initializeApp } from "./app.js";
+import { initializeApp } from './app.js';
 
-import "./features/theme.js";
-import "./styles.css";
+import './features/theme.js';
+import './styles.css';
 
-document.addEventListener("DOMContentLoaded", initializeApp);
+document.addEventListener('DOMContentLoaded', initializeApp);

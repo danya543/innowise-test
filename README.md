@@ -6,3 +6,5 @@ Run commands in terminal in root directory
 - `npm run build`
 - Open `index.html` from `dist/`
   
+  eslint prettier precommit
+  for phone add adaptive styles(make calculator and theme btn bigger, history block downsize)
