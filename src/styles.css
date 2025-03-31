@@ -26,6 +26,10 @@
   padding: 10px;
 }
 
+* {
+  margin: 0;
+  padding: 0;
+}
 body {
   overflow: hidden;
   margin: 0;
@@ -189,4 +193,14 @@ button:hover {
 
 .clear-history:hover {
   opacity: 0.5;
+}
+
+@media (max-width: 500px) {
+  .history-panel {
+    width: 70vw;
+    font-size: 25px;
+  }
+  .theme-btn {
+    font-size: 30px;
+  }
 }
