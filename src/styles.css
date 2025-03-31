@@ -183,6 +183,8 @@ button:hover {
 }
 
 .clear-history {
+  margin-top: 10px;
+  width: 100%;
   opacity: 1;
   background: var(--operator-bg);
   border: none;
