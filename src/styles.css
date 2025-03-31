@@ -86,7 +86,7 @@ button {
   background-color: var(--number-bg);
 }
 
-button:hover {
+button:hover:not(:disabled) {
   opacity: 0.8;
 }
 
@@ -124,7 +124,6 @@ button:hover {
   left: 50%;
   transform: translate(-50%, -50%) scale(0.9);
   width: 350px;
-  height: 60vh;
   background: var(--calculator-bg);
   border-radius: 10px;
   padding: 15px;
@@ -152,7 +151,7 @@ button:hover {
   list-style: none;
   padding: 0;
   margin: 0;
-  max-height: calc(60vh - 100px);
+  max-height: calc(60vh - 150px);
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: var(--operator-bg) transparent;
@@ -193,8 +192,9 @@ button:hover {
   transition: opacity 0.2s ease;
 }
 
-.clear-history:hover {
-  opacity: 0.5;
+.clear-history:disabled {
+  filter: grayscale(0.7);
+  cursor: not-allowed;
 }
 
 @media (max-width: 500px) {

@@ -32,6 +32,7 @@ document.addEventListener('keydown', (e) => {
 clearHistoryBtn.addEventListener('click', () => {
   calculationHistory.length = 0;
   localStorage.setItem('calcHistory', JSON.stringify(calculationHistory));
+  clearHistoryBtn.disabled = true;
   updateHistoryList();
 });
 
@@ -51,6 +52,7 @@ export function addToHistory(expression, result) {
 }
 
 export function updateHistoryList() {
+  clearHistoryBtn.disabled = calculationHistory.length > 0 ? false : true;
   historyList.innerHTML = calculationHistory
     .map((entry) => `<li>${entry}</li>`)
     .join('');
