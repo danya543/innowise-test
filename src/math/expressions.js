@@ -1,3 +1,5 @@
+import { checkFactorial, handleNthRootExpr } from './additional';
+
 export function changeSign() {
   const display = document.querySelector('.display');
   const currentValue = display.textContent;
@@ -76,14 +78,17 @@ export function safeEval(expr) {
   let processedExpr = expr
     .replace(/÷/g, '/')
     .replace(/x/g, '*')
-    .replace(/√(\d+(\.\d+)?)/g, '($1^(1/2))')
+    .replace(
+      /(^|[+\-*/])√(\d+(\.\d+)?)/g,
+      (_, operator, number) => `${operator}(${number}^(1/2))`
+    )
     .replace(/∛(\d+(\.\d+)?)/g, '($1^(1/3))')
     .replace(/\^/g, '**')
     .replace(/%/g, '/100');
-  if (/(\d+(\.\d+)?)!/g.test(processedExpr)) {
-    const result = factorial(processedExpr);
-    processedExpr = processedExpr.replace(/(\d+(\.\d+)?)!/g, result);
-  }
+
+  processedExpr = checkFactorial(processedExpr);
+  processedExpr = handleNthRootExpr(processedExpr);
+  console.log(processedExpr);
 
   processedExpr = processedExpr.replace(/\+-/g, '-').replace(/--/g, '+');
 
@@ -98,14 +103,4 @@ export function safeEval(expr) {
   } catch {
     return 'Error';
   }
-}
-
-function factorial(value) {
-  const match = value.match(/(\d+(\.\d+)?)!/);
-  return countFactorial(+match[1]);
-}
-
-function countFactorial(value) {
-  if (value === 1) return value;
-  return value * countFactorial(--value);
 }

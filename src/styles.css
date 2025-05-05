@@ -72,6 +72,12 @@ button {
   cursor: pointer;
   transition: background-color 0.2s;
 }
+button:hover:not(:disabled) {
+  opacity: 0.8;
+}
+button:disabled {
+  cursor: not-allowed;
+}
 
 .function {
   background-color: var(--function-bg);
@@ -84,9 +90,10 @@ button {
 .number {
   background-color: var(--number-bg);
 }
-
-button:hover:not(:disabled) {
-  opacity: 0.8;
+.number:disabled,
+.operator:disabled,
+.function:disabled {
+  opacity: 0.3;
 }
 
 .history {

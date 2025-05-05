@@ -3,6 +3,10 @@ import {
   isAnswer,
   changeIsAnswer,
   MAX_DISPLAY_LENGTH,
+  shouldResetDisplay,
+  isLastNumber,
+  isLastSign,
+  checkExponentiation,
 } from './constants.js';
 import { addToHistory } from './history.js';
 import { safeEval, changeSign } from '../math/expressions.js';
@@ -53,14 +57,14 @@ export function handleButtonClick() {
       break;
 
     case textContent === 'x²':
-      display.textContent = isLastNumber(currentDisplay, '^2');
+      display.textContent = checkExponentiation(currentDisplay, '^2');
       break;
 
     case textContent === 'x³':
-      display.textContent = isLastNumber(currentDisplay, '^3');
+      display.textContent = checkExponentiation(currentDisplay, '^3');
       break;
     case textContent === 'xʸ':
-      display.textContent = isLastNumber(currentDisplay, '^');
+      display.textContent = checkExponentiation(currentDisplay, '^');
       break;
 
     case textContent === '10ˣ':
@@ -68,13 +72,20 @@ export function handleButtonClick() {
       break;
 
     case textContent === '√':
-      display.textContent = isLastSign(currentDisplay, '√');
+      if (shouldResetDisplay(currentDisplay)) {
+        display.textContent = '√';
+        changeIsAnswer(false);
+      } else display.textContent = isLastSign(currentDisplay, '√');
       break;
 
     case textContent === '∛':
-      display.textContent = isLastSign(currentDisplay, '∛');
+      if (shouldResetDisplay(currentDisplay)) {
+        display.textContent = '∛';
+        changeIsAnswer(false);
+      } else display.textContent = isLastSign(currentDisplay, '∛');
       break;
     case textContent === 'ʸ√':
+      isAnswer ? changeIsAnswer(false) : null;
       display.textContent = isLastNumber(currentDisplay, '√');
       break;
     case textContent === 'x!':
@@ -89,7 +100,7 @@ export function handleButtonClick() {
       if (currentDisplay.endsWith('%') || currentDisplay.endsWith('!')) {
         return;
       }
-      display.textContent = shouldResetDisplay()
+      display.textContent = shouldResetDisplay(currentDisplay)
         ? textContent === '.'
           ? '0.'
           : textContent
@@ -99,7 +110,7 @@ export function handleButtonClick() {
 }
 
 function handleNumberInput(currentDisplay, newInput) {
-  if (shouldResetDisplay()) {
+  if (shouldResetDisplay(currentDisplay)) {
     return newInput;
   }
 
@@ -135,29 +146,8 @@ function handleEquals() {
   changeIsAnswer(true);
 }
 
-function shouldResetDisplay() {
-  return (
-    display.textContent === '0' || display.textContent === 'Error' || isAnswer
-  );
-}
-
-function isLastNumber(expr, operator) {
-  const lastChar = expr.slice(-1);
-  const isValid = /\d|\)/.test(lastChar);
-
-  if (expr !== 'Error' && isValid) {
-    return expr + operator;
-  } else {
-    return expr === 'Error' ? '0' : expr;
-  }
-}
-
-function isLastSign(expr, operator) {
-  const isValid = /^[+\-*/]$/.test(expr.slice(-1));
-
-  if (expr !== 'Error' && expr !== '0' && isValid) {
-    return expr + operator;
-  } else {
-    return expr === '0' ? operator : expr;
-  }
-}
+//! changeSign for √
+//! 5√, 10^, x^  можно только число проверку сделать      проверить changeSign
+//! 0√ нельзя
+//? 1/x сделать
+//? -4^2 check
