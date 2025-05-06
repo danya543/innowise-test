@@ -4,7 +4,7 @@ export function changeSign() {
   const display = document.querySelector('.display');
   const currentValue = display.textContent;
 
-  if (currentValue === '0' || currentValue === 'Error') return;
+  if (currentValue === '0') return;
 
   // common number or with % 5% ↔ -5%, 5 ↔ -5
   if (/^-?\d+\.?\d*%?$/.test(currentValue)) {
