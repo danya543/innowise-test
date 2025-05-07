@@ -1,8 +1,11 @@
 export function handleNthRootExpr(value) {
-  if (/(\d)√/g.test(value)) {
-    if (!/(\d)√(\d+(\.\d+)?)/g.test(value)) return 'Error';
-    return value.replace(/(\d)√(\d+(\.\d+)?)/g, (_, root, radicand) => {
-      return `${radicand}**(1/${root})`;
+  console.log(value);
+  if (/(\d)√/.test(value)) {
+    if (!/(\d)√-?\d+(\.\d+)?/.test(value)) return 'Error';
+    return value.replace(/(\d)√(-?\d+(\.\d+)?)/g, (_, root, radicand) => {
+      return root % 2
+        ? `${radicand.startsWith('-') ? '-' : ''}(${radicand.startsWith('-') ? radicand.slice(1) : radicand}**(1/${root}))`
+        : `${radicand}**(1/${root})`;
     });
   }
   return value;
