@@ -15,7 +15,6 @@ export function handleMathFunctions(textContent) {
     case 'x²':
       display.textContent = checkExponentiation(currentDisplay, '^2');
       break;
-
     case 'x³':
       display.textContent = checkExponentiation(currentDisplay, '^3');
       break;
@@ -27,6 +26,14 @@ export function handleMathFunctions(textContent) {
     case '10ˣ':
       display.textContent = isLastSign(currentDisplay, '10^');
       break;
+    case '1/x':
+      if (isAnswer) {
+        changeIsAnswer(false);
+        display.textContent = '1/';
+        break;
+      }
+      display.textContent = isLastSign(currentDisplay, '1/');
+      break;
 
     case '√':
       if (shouldResetDisplay(currentDisplay)) {
@@ -34,7 +41,6 @@ export function handleMathFunctions(textContent) {
         changeIsAnswer(false);
       } else display.textContent = isLastSign(currentDisplay, '√');
       break;
-
     case '∛':
       if (shouldResetDisplay(currentDisplay)) {
         display.textContent = '∛';
@@ -45,6 +51,7 @@ export function handleMathFunctions(textContent) {
       isAnswer ? changeIsAnswer(false) : null;
       display.textContent = isLastNumber(currentDisplay, '√');
       break;
+
     case 'x!':
       display.textContent = isLastNumber(currentDisplay, '!');
       break;

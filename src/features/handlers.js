@@ -1,7 +1,6 @@
 import {
   changeIsAnswer,
   MAX_DISPLAY_LENGTH,
-  shouldResetDisplay,
   SPECIAL_FUNCTIONS,
   MEMORY_OPERATIONS,
   MATH_OPERATIONS,
@@ -29,18 +28,19 @@ export function handleButtonClick() {
 
   const { textContent } = this;
 
-  if (display.textContent !== 'Error') {
-    if (SPECIAL_FUNCTIONS.includes(textContent)) {
-      handleSpecialFunctions(textContent);
-    } else if (MEMORY_OPERATIONS.includes(textContent)) {
-      handleMemoryOperations(textContent);
-    } else if (MATH_OPERATIONS.includes(textContent)) {
-      handleMathFunctions(textContent);
-    } else {
-      handleOperatorsAndNumbers(textContent);
-    }
-  } else {
+  if (display.textContent === 'Error') {
     if (/^\d$/.test(textContent)) handleOperatorsAndNumbers(textContent);
+    if (textContent === 'AC') display.textContent = '0';
+    return;
+  }
+  if (SPECIAL_FUNCTIONS.includes(textContent)) {
+    handleSpecialFunctions(textContent);
+  } else if (MEMORY_OPERATIONS.includes(textContent)) {
+    handleMemoryOperations(textContent);
+  } else if (MATH_OPERATIONS.includes(textContent)) {
+    handleMathFunctions(textContent);
+  } else {
+    handleOperatorsAndNumbers(textContent);
   }
 }
 

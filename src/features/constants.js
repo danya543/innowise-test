@@ -7,7 +7,17 @@ export const MAX_DISPLAY_LENGTH = 50;
 
 export const SPECIAL_FUNCTIONS = ['AC', '+/-', '%', '='];
 export const MEMORY_OPERATIONS = ['M+', 'M-', 'MC', 'MR'];
-export const MATH_OPERATIONS = ['x²', 'x³', 'xʸ', '10ˣ', '√', '∛', 'ʸ√', 'x!'];
+export const MATH_OPERATIONS = [
+  'x²',
+  'x³',
+  'xʸ',
+  '10ˣ',
+  '1/x',
+  '√',
+  '∛',
+  'ʸ√',
+  'x!',
+];
 
 export function shouldResetDisplay(currentDisplay) {
   return currentDisplay === '0' || currentDisplay === 'Error' || isAnswer;

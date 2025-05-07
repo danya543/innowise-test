@@ -88,7 +88,6 @@ export function safeEval(expr) {
 
   processedExpr = checkFactorial(processedExpr);
   processedExpr = handleNthRootExpr(processedExpr);
-  console.log(processedExpr);
 
   processedExpr = processedExpr.replace(/\+-/g, '-').replace(/--/g, '+');
 
