@@ -32,24 +32,34 @@ export class Calculator {
     if (
       this.currentValue.endsWith('%') ||
       this.currentValue.endsWith('!') ||
-      this.currentValue.endsWith('Undefined')
+      this.currentValue === 'Undefined'
     )
       return;
 
+    const lastNumber = this.currentValue.split(/[-+*/^]/).pop();
+
     if (digit === '.') {
-      const lastNumber = this.currentValue.split(/[-+*/^]/).pop();
       if (!lastNumber.includes('.')) {
         this.saveState();
-        if (lastNumber === '') {
-          this.currentValue += '0.';
-        } else if (this.currentValue === 'Undefined') {
+        if (lastNumber === '' || this.currentValue === 'Undefined') {
           this.currentValue = '0.';
-        } else this.currentValue += '.';
+        } else {
+          this.currentValue += '.';
+        }
       }
     } else {
       this.saveState();
-      this.currentValue =
-        this.currentValue === '0' ? digit : this.currentValue + digit;
+
+      const isLeadingZero = /^0$/.test(lastNumber);
+      const isAfterOperator = /[-+*/^]0$/.test(this.currentValue);
+
+      if (isLeadingZero || isAfterOperator) {
+        this.currentValue = this.currentValue.slice(0, -1) + digit;
+      } else if (this.currentValue === '0') {
+        this.currentValue = digit;
+      } else {
+        this.currentValue += digit;
+      }
     }
   }
 
@@ -62,40 +72,44 @@ export class Calculator {
     )
       return;
 
-    if (this.autoEvaluateOnOperator(operator)) return;
-
     const lastChar = this.currentValue.slice(-1);
     this.saveState();
+
     if ('+-*/'.includes(lastChar)) {
       this.currentValue = this.currentValue.slice(0, -1) + operator;
-    } else {
-      this.currentValue += operator;
+      return;
     }
-  }
 
-  prepareExpression(raw) {
-    return handleNthRootExpr(
-      checkFactorial(
-        raw
-          .replace(
-            /(^|[+\-*/])√(\d+(\.\d+)?)/g,
-            (_, op, num) => `${op}(${num}^(1/2))`
-          )
-          .replace(/∛(-)?(\d+(\.\d+)?)/g, (_, minus, number) =>
-            minus ? `-(${number}^(1/3))` : `(${number}^(1/3))`
-          )
-          .replace(/^-(\d+(\.\d+)?)\^/, '(-$1)^')
-          .replace(/\^/g, '**')
-          .replace(/%/g, '/100')
-          .replace(/[^\d+\-*/.^()]/g, '')
-      )
-    );
+    if (operator === '*' || operator === '/') {
+      this.currentValue += operator;
+      return;
+    }
+
+    if (this.autoEvaluateOnOperator(operator)) return;
+
+    this.currentValue += operator;
   }
 
   evaluate() {
-    const expression = this.prepareExpression(this.currentValue);
+    this.saveState();
+    this.currentValue = this.currentValue
+      .replace(
+        /(^|[+\-*/])√(\d+(\.\d+)?)/g,
+        (_, operator, number) => `${operator}(${number}^(1/2))`
+      )
+      .replace(/∛(-)?(\d+(\.\d+)?)/g, (_, minus, number) =>
+        minus ? `-(${number}^(1/3))` : `(${number}^(1/3))`
+      )
+      .replace(/^-(\d+(\.\d+)?)\^/, '(-$1)^')
+      .replace(/\^/g, '**')
+      .replace(/%/g, '/100');
+
+    this.currentValue = handleNthRootExpr(this.currentValue);
+    this.currentValue = checkFactorial(this.currentValue);
+
+    this.currentValue = this.currentValue.replace(/[^\d+\-*/.^()]/g, '');
     try {
-      const result = new Function('return ' + expression)();
+      const result = new Function('return ' + this.currentValue)();
       if (!isFinite(result)) throw new Error('Division by zero');
       this.currentValue =
         result % 1 === 0
@@ -291,19 +305,38 @@ export class Calculator {
   autoEvaluateOnOperator(operator) {
     this.saveState();
     try {
-      const expression = this.prepareExpression(this.currentValue);
+      let expression = this.currentValue;
+
+      expression = expression
+        .replace(
+          /(^|[+\-*/])√(\d+(\.\d+)?)/g,
+          (_, op, num) => `${op}(${num}^(1/2))`
+        )
+        .replace(/∛(-)?(\d+(\.\d+)?)/g, (_, minus, number) =>
+          minus ? `-(${number}^(1/3))` : `(${number}^(1/3))`
+        )
+        .replace(/^-(\d+(\.\d+)?)\^/, '(-$1)^')
+        .replace(/\^/g, '**')
+        .replace(/%/g, '/100');
+
+      expression = handleNthRootExpr(expression);
+      expression = checkFactorial(expression);
+      expression = expression.replace(/[^\d+\-*/.^()]/g, '');
 
       const result = new Function('return ' + expression)();
       if (!isFinite(result)) throw new Error('Division by zero');
+
       const formattedResult =
         result % 1 === 0
           ? result.toString()
           : result.toFixed(8).replace(/\.?0+$/, '');
 
       this.currentValue = formattedResult + operator;
+      this.updateDisplay();
       return true;
     } catch {
       this.currentValue = 'Undefined';
+      this.updateDisplay();
       return true;
     }
   }
