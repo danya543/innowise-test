@@ -1,14 +1,15 @@
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+import path from 'node:path';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import CssMinimizerPlugin from 'css-minimizer-webpack-plugin';
+import autoprefixer from 'autoprefixer';
 
-module.exports = {
+export default {
   mode: 'production',
   entry: './src/index.js',
   output: {
     filename: 'index.[contenthash].js',
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(process.cwd(), 'dist'),
     clean: true,
   },
   module: {
@@ -23,7 +24,7 @@ module.exports = {
             options: {
               postcssOptions: {
                 plugins: [
-                  require("autoprefixer")({
+                  autoprefixer({
                     overrideBrowserslist: ["last 2 versions", "> 1%"]
                   })
                 ]

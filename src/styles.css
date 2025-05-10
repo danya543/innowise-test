@@ -44,7 +44,6 @@ body {
 .calculator {
   color: var(--text-color);
   border: 1px solid var(--border-color);
-  width: 300px;
   background-color: var(--calculator-bg);
   border-radius: 10px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
@@ -61,7 +60,7 @@ body {
 
 .buttons {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(10, 1fr);
 }
 
 button {
@@ -72,6 +71,12 @@ button {
   font-size: 25px;
   cursor: pointer;
   transition: background-color 0.2s;
+}
+button:hover:not(:disabled) {
+  opacity: 0.8;
+}
+button:disabled {
+  cursor: not-allowed;
 }
 
 .function {
@@ -85,9 +90,10 @@ button {
 .number {
   background-color: var(--number-bg);
 }
-
-button:hover:not(:disabled) {
-  opacity: 0.8;
+.number:disabled,
+.operator:disabled,
+.function:disabled {
+  opacity: 0.3;
 }
 
 .history {
